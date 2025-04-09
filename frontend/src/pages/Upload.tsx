@@ -5,7 +5,7 @@ import {MoonLoader} from "react-spinners";
 
 function Upload() {
 
-    const [files, setFiles] = useState<{files?:FileList}>({});
+    const [files, setFiles] = useState<File[]>([]);
     const [loading, setLoading] = useState<boolean>(false);
 
     function isEmpty(obj: object): boolean {
@@ -35,14 +35,40 @@ function Upload() {
     }
 
     function handleFileUpload(e: ChangeEvent<HTMLInputElement>) {
-        if(!e.target.files) return;
+        if (!e.target.files) return;
         setLoading(true);
-        setFiles((prev) => ({...prev, [e.target.name]: e.target.files}));
-        console.log(e.target.files);
+        setFiles(Array.from(e.target.files)); // Convert FileList → File[]
     }
 
-    function handleSubmit() {
-        if(isEmpty(files)) return;
+    async function handleSubmit() {
+        if(isEmpty(files)) {
+            alert("Please select at least one file.");
+            return;
+        }
+
+        const formData = new FormData();
+
+        files.forEach((file) => {
+            formData.append("files", file); // now it's appending individual File objects
+        });
+
+        try {
+            const res = await fetch("http://localhost:8080/api/v1/file/upload", {
+                method: "POST",
+                body: formData,
+            });
+
+            const result = await res.json();
+            console.log("Upload response:", result);
+            alert("Upload successful!");
+
+            setLoading(true);
+            setFiles([]);
+
+        } catch (err) {
+            console.error("Upload failed", err);
+            alert("Something went wrong!");
+        }
     }
 
     return (
