@@ -90,7 +90,7 @@ function Upload() {
             }
             {id.length>0 && (<div className="flex flex-col items-center justify-center gap-2">
                 <p className="text-stone-200 font-medium text-lg">Share this link:</p>
-                <p onClick={()=>copyToClipboard(`${siteUrl}/download/${id}`)} className="underline text-stone-200 font-medium">{`${siteUrl}/download/${id}`}</p>
+                <p onClick={()=>copyToClipboard(`${siteUrl}download/${id}`)} className="underline text-stone-200 font-medium">{`${siteUrl}download/${id}`}</p>
             </div>)}
             <input ref={fileRef} multiple type="file" className="hidden" onChange={handleFileUpload} />
         </div>
