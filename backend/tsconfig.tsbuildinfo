@@ -1,0 +1,1 @@
+{"root":["./src/server.ts","./src/config/db.ts","./src/controller/fileController.controller.ts","./src/middleware/upload.middleware.ts","./src/model/fileModel.model.ts","./src/routes/fileRoutes.router.ts","./src/schema/fileSchema.schema.ts"],"version":"5.8.2"}

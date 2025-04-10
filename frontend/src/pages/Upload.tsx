@@ -2,7 +2,6 @@ import {ChangeEvent, useEffect, useRef, useState} from "react";
 import { IoIosSend } from "react-icons/io";
 import { MdFileUpload } from "react-icons/md";
 import {MoonLoader} from "react-spinners";
-import {Link} from "react-router";
 
 function Upload() {
 
@@ -40,6 +39,10 @@ function Upload() {
         if (!e.target.files) return;
         setLoading(true);
         setFiles(Array.from(e.target.files));
+    }
+
+    async function copyToClipboard(text: string){
+        await navigator.clipboard.writeText(text);
     }
 
     async function handleSubmit() {
@@ -82,7 +85,10 @@ function Upload() {
                 }} size={30} />
             ) : (isEmpty(files) ? <button onClick={handleOpenUpload} className="btn-class"><p>Upload</p><MdFileUpload /></button> : <button onClick={handleSubmit} className="btn-class"><p>Send Files</p><IoIosSend /></button>)
             }
-            {id.length>0 && (<Link to={`/download/${id}`} className="underline text-stone-200 font-medium">{`http://localhost:3000/download/${id}`}</Link>)}
+            {id.length>0 && (<div className="flex flex-col items-center justify-center gap-2">
+                <p className="text-stone-200 font-medium text-lg">Share this link:</p>
+                <p onClick={()=>copyToClipboard(`http://localhost:3000/download/${id}`)} className="underline text-stone-200 font-medium">{`http://localhost:3000/download/${id}`}</p>
+            </div>)}
             <input ref={fileRef} multiple type="file" className="hidden" onChange={handleFileUpload} />
         </div>
     )
