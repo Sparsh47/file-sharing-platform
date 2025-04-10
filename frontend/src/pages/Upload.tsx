@@ -90,9 +90,9 @@ function Upload() {
                 }} size={30} />
             ) : (isEmpty(files) ? <button onClick={handleOpenUpload} className="btn-class"><p>Upload</p><MdFileUpload /></button> : <button onClick={handleSubmit} className="btn-class"><p>Send Files</p><IoIosSend /></button>)
             }
-            {id.length>0 && (<div className="flex flex-col items-center justify-center gap-2">
-                <p className="curtext-stone-200 font-medium text-lg">Share this link:</p>
-                <p onClick={()=>copyToClipboard(`${siteUrl}download/${id}`)} className="cursor-pointer underline text-stone-200 font-medium">{`${siteUrl}download/${id}`}</p>
+            {id.length>0 && (<div className="flex flex-col items-center justify-center gap-2 px-5">
+                <p className="text-stone-200 font-medium text-lg">Share this link:</p>
+                <p onClick={()=>copyToClipboard(`${siteUrl}download/${id}`)} className="cursor-pointer underline text-stone-200 font-medium text-xs sm:text-base">{`${siteUrl}download/${id}`}</p>
             </div>)}
             <input ref={fileRef} multiple type="file" className="hidden" onChange={handleFileUpload} />
             <Toaster
