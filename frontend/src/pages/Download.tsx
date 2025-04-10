@@ -3,6 +3,8 @@ import {useEffect, useState} from "react";
 import { IoMdDownload } from "react-icons/io";
 import JSZip from "jszip";
 
+const apiUrl = import.meta.env.VITE_API_URL;
+
 type FileFromServer = {
     _id: string;
     filename: string;
@@ -20,7 +22,7 @@ export default function Download() {
 
     useEffect(()=>{
         async function fetchFiles() {
-            const response = await fetch(`http://localhost:8080/api/v1/file/download/${params.id}`);
+            const response = await fetch(`${apiUrl}/api/v1/file/download/${params.id}`);
             const files = await response.json();
             console.log("Files: ",files);
             setFiles(files.files);

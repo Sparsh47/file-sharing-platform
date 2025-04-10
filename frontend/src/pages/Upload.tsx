@@ -3,6 +3,9 @@ import { IoIosSend } from "react-icons/io";
 import { MdFileUpload } from "react-icons/md";
 import {MoonLoader} from "react-spinners";
 
+const apiUrl = import.meta.env.VITE_API_URL;
+const siteUrl = import.meta.env.VITE_SITE_URL;
+
 function Upload() {
 
     const [files, setFiles] = useState<File[]>([]);
@@ -58,7 +61,7 @@ function Upload() {
         });
 
         try {
-            const res = await fetch("http://localhost:8080/api/v1/file/upload", {
+            const res = await fetch(`${apiUrl}/api/v1/file/upload`, {
                 method: "POST",
                 body: formData,
             });
@@ -87,7 +90,7 @@ function Upload() {
             }
             {id.length>0 && (<div className="flex flex-col items-center justify-center gap-2">
                 <p className="text-stone-200 font-medium text-lg">Share this link:</p>
-                <p onClick={()=>copyToClipboard(`http://localhost:3000/download/${id}`)} className="underline text-stone-200 font-medium">{`http://localhost:3000/download/${id}`}</p>
+                <p onClick={()=>copyToClipboard(`${siteUrl}/download/${id}`)} className="underline text-stone-200 font-medium">{`${siteUrl}/download/${id}`}</p>
             </div>)}
             <input ref={fileRef} multiple type="file" className="hidden" onChange={handleFileUpload} />
         </div>
