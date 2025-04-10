@@ -2,6 +2,7 @@ import {ChangeEvent, useEffect, useRef, useState} from "react";
 import { IoIosSend } from "react-icons/io";
 import { MdFileUpload } from "react-icons/md";
 import {MoonLoader} from "react-spinners";
+import {toast, Toaster} from "react-hot-toast";
 
 const apiUrl = import.meta.env.VITE_API_URL;
 const siteUrl = import.meta.env.VITE_SITE_URL;
@@ -46,6 +47,7 @@ function Upload() {
 
     async function copyToClipboard(text: string){
         await navigator.clipboard.writeText(text);
+        toast.success("Copied to clipboard!");
     }
 
     async function handleSubmit() {
@@ -68,19 +70,19 @@ function Upload() {
 
             const result = await res.json();
             setId(result.id);
-            alert("Upload successful!");
+            toast.success("Upload successful!");
             setLoading(true);
             setFiles([]);
 
         } catch (err) {
             console.error("Upload failed", err);
-            alert("Something went wrong!");
+            toast.error("Something went wrong!");
         }
     }
 
     return (
-        <div className="w-full min-h-screen bg-stone-800 flex flex-col items-center justify-center gap-10">
-            <h1 className="text-5xl font-medium text-stone-200">File Sharing</h1>
+        <div className="w-full min-h-screen bg-stone-800 flex flex-col items-center justify-center gap-5 sm:gap-10 px-5">
+            <h1 className="text-3xl sm:text-5xl font-medium text-stone-200">File Sharing</h1>
             {loading ? (
                 <MoonLoader color="#e7e5e4" loading={loading} cssOverride={{
                     display: "block",
@@ -89,10 +91,14 @@ function Upload() {
             ) : (isEmpty(files) ? <button onClick={handleOpenUpload} className="btn-class"><p>Upload</p><MdFileUpload /></button> : <button onClick={handleSubmit} className="btn-class"><p>Send Files</p><IoIosSend /></button>)
             }
             {id.length>0 && (<div className="flex flex-col items-center justify-center gap-2">
-                <p className="text-stone-200 font-medium text-lg">Share this link:</p>
-                <p onClick={()=>copyToClipboard(`${siteUrl}download/${id}`)} className="underline text-stone-200 font-medium">{`${siteUrl}download/${id}`}</p>
+                <p className="curtext-stone-200 font-medium text-lg">Share this link:</p>
+                <p onClick={()=>copyToClipboard(`${siteUrl}download/${id}`)} className="cursor-pointer underline text-stone-200 font-medium">{`${siteUrl}download/${id}`}</p>
             </div>)}
             <input ref={fileRef} multiple type="file" className="hidden" onChange={handleFileUpload} />
+            <Toaster
+                position="top-right"
+                reverseOrder={false}
+            />
         </div>
     )
 }
