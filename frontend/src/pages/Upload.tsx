@@ -2,11 +2,13 @@ import {ChangeEvent, useEffect, useRef, useState} from "react";
 import { IoIosSend } from "react-icons/io";
 import { MdFileUpload } from "react-icons/md";
 import {MoonLoader} from "react-spinners";
+import {Link} from "react-router";
 
 function Upload() {
 
     const [files, setFiles] = useState<File[]>([]);
     const [loading, setLoading] = useState<boolean>(false);
+    const [id, setId] = useState<string>("");
 
     function isEmpty(obj: object): boolean {
         return Object.keys(obj).length === 0;
@@ -37,7 +39,7 @@ function Upload() {
     function handleFileUpload(e: ChangeEvent<HTMLInputElement>) {
         if (!e.target.files) return;
         setLoading(true);
-        setFiles(Array.from(e.target.files)); // Convert FileList → File[]
+        setFiles(Array.from(e.target.files));
     }
 
     async function handleSubmit() {
@@ -49,7 +51,7 @@ function Upload() {
         const formData = new FormData();
 
         files.forEach((file) => {
-            formData.append("files", file); // now it's appending individual File objects
+            formData.append("files", file);
         });
 
         try {
@@ -59,9 +61,8 @@ function Upload() {
             });
 
             const result = await res.json();
-            console.log("Upload response:", result);
+            setId(result.id);
             alert("Upload successful!");
-
             setLoading(true);
             setFiles([]);
 
@@ -81,6 +82,7 @@ function Upload() {
                 }} size={30} />
             ) : (isEmpty(files) ? <button onClick={handleOpenUpload} className="btn-class"><p>Upload</p><MdFileUpload /></button> : <button onClick={handleSubmit} className="btn-class"><p>Send Files</p><IoIosSend /></button>)
             }
+            {id.length>0 && (<Link to={`/download/${id}`} className="underline text-stone-200 font-medium">{`http://localhost:3000/download/${id}`}</Link>)}
             <input ref={fileRef} multiple type="file" className="hidden" onChange={handleFileUpload} />
         </div>
     )

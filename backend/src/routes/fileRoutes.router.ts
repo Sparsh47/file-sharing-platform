@@ -7,4 +7,4 @@ export const router = express.Router();
 const fileController = new FileController();
 
 router.post("/upload", upload.array("files"), fileController.uploadFiles)
-router.get("/download/:fileId", async (req, res) => {})
+router.get("/download/:fileId", fileController.getFiles)
