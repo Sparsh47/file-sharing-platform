@@ -2,6 +2,9 @@ import express from "express";
 import cors from "cors";
 import connectToDB from "./config/db";
 import {router as fileRouter} from "./routes/fileRoutes.router"
+import dotenv from "dotenv";
+
+dotenv.config();
 
 const app = express();
 
